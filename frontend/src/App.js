@@ -6,6 +6,7 @@ import Home from './pages/Home';
 import Dashboard from './pages/Dashboard';
 import CareerAssessment from './pages/CareerAssessment';
 import Profile from './pages/Profile';
+import CreateProfile from './pages/CreateProfile';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/assessment" element={<CareerAssessment />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/create-profile" element={<CreateProfile />} />
           </Routes>
         </main>
         <Footer />

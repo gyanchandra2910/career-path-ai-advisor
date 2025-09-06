@@ -1,0 +1,4 @@
+# This directory stores uploaded resume files
+# Files in this directory should not be committed to version control
+*
+!.gitkeep

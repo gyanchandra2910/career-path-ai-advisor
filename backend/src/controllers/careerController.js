@@ -58,15 +58,65 @@ const careerController = {
   // Create user profile
   createUserProfile: async (req, res) => {
     try {
-      const profileData = req.body;
+      const { name, email, college, year, interests, skills, quizAnswers } = req.body;
+      
+      // Validate required fields
+      if (!name || !email || !college || !year || !interests || !skills || !quizAnswers) {
+        return res.status(400).json({
+          error: 'Missing required fields'
+        });
+      }
+
+      // Parse JSON fields
+      let parsedInterests, parsedQuizAnswers;
+      try {
+        parsedInterests = JSON.parse(interests);
+        parsedQuizAnswers = JSON.parse(quizAnswers);
+      } catch (parseError) {
+        return res.status(400).json({
+          error: 'Invalid JSON format for interests or quiz answers'
+        });
+      }
+
+      const profileData = {
+        name: name.trim(),
+        email: email.trim().toLowerCase(),
+        college: college.trim(),
+        year,
+        interests: parsedInterests,
+        skills: skills.trim(),
+        quizAnswers: parsedQuizAnswers,
+        resumeFile: req.file ? {
+          filename: req.file.filename,
+          originalName: req.file.originalname,
+          path: req.file.path,
+          size: req.file.size
+        } : null
+      };
+
       const profile = await careerService.createUserProfile(profileData);
       
       res.status(201).json({
         success: true,
-        data: profile
+        data: profile,
+        message: 'Profile created successfully'
       });
     } catch (error) {
       console.error('Error creating user profile:', error);
+      
+      // Handle multer errors
+      if (error.code === 'LIMIT_FILE_SIZE') {
+        return res.status(400).json({
+          error: 'File size too large. Maximum size is 5MB.'
+        });
+      }
+      
+      if (error.message.includes('Only PDF and Word documents')) {
+        return res.status(400).json({
+          error: 'Invalid file type. Only PDF and Word documents are allowed.'
+        });
+      }
+
       res.status(500).json({
         error: 'Failed to create user profile'
       });
