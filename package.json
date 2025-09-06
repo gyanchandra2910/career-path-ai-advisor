@@ -7,12 +7,16 @@
     "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
     "dev:frontend": "cd frontend && npm start",
     "dev:backend": "cd backend && npm run dev",
+    "dev:simple": "node server.js",
     "start": "concurrently \"npm run start:backend\" \"npm run start:frontend\"",
     "start:frontend": "cd frontend && npm run build && serve -s build",
     "start:backend": "cd backend && npm start",
+    "start:simple": "node server.js",
     "build": "npm run build:frontend",
     "build:frontend": "cd frontend && npm run build",
-    "test": "npm run test:frontend && npm run test:backend",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
     "test:frontend": "cd frontend && npm test",
     "test:backend": "cd backend && npm test",
     "install:all": "npm install && npm run install:frontend && npm run install:backend",
@@ -23,7 +27,8 @@
     "clean:backend": "cd backend && rm -rf node_modules",
     "lint": "npm run lint:frontend && npm run lint:backend",
     "lint:frontend": "cd frontend && npm run lint",
-    "lint:backend": "cd backend && npm run lint"
+    "lint:backend": "cd backend && npm run lint",
+    "test:api": "node test-api.js"
   },
   "keywords": [
     "career",
@@ -39,6 +44,7 @@
   "license": "MIT",
   "devDependencies": {
     "concurrently": "^8.2.2",
+    "jest": "^30.1.3",
     "serve": "^14.2.1"
   },
   "engines": {
